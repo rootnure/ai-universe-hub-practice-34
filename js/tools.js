@@ -26,19 +26,19 @@ const displayTools = (tools, isLoadAll) => {
         const { id, image, features, name, published_in, links } = tool;
         const toolDiv = document.createElement('div');
         toolDiv.innerHTML = `
-        <div class="card bg-base-100 shadow-xl" onclick="openDetailsModal('${id}')">
+        <div class="card bg-base-100 shadow-xl"  title="Click to show details">
             <figure class="px-10 pt-10 h-[250px]">
                 <img src="${image}" alt="${name}" class="rounded-md" />
             </figure>
             <div class="card-body">
                 <h2 class="card-title">Features</h2>
                 <ol class="list-decimal list-inside max-h-12 overflow-auto">
-                ${features.map(feature => `<li>${feature}</li>`).join(" ")}
+                    ${features.map(feature => `<li>${feature}</li>`).join(" ")}
                 </ol>
                 <hr>
                 <div class="flex justify-between mt-2">
                     <div class="flex flex-col gap-y-2">
-                        <h2 class="text-lg font-bold">${name}</h2>
+                        <h2 onclick="openDetailsModal('${id}')" class="text-lg text-blue-600 hover:scale-105 duration-100 hover:cursor-pointer hover:underline font-bold">${name}</h2>
                         <div class="text-gray-400"><i class="fa-regular fa-calendar-days"></i> <date date=${published_in}>${published_in}</date></div>
                     </div>
                     <div class="flex items-center gap-x-2">
@@ -145,7 +145,7 @@ const openDetailsModal = async (toolsId) => {
                 <figure class="p-4 h-[200px]">
                     <img src="${image_link[0]}" alt="${tool_name}" class="rounded-xl object-contain w-full" />
                 </figure>
-                <div class="card-body text-center max-h-48 overflow-auto">
+                <div class="card-body items-center text-center max-h-48 overflow-auto">
                     ${samples ? samples.map(sample => `<h2 class="card-title">${sample.input}</h2><p class="text-sm">${sample.output}</p>`).join(" ") : '<h2 class="card-title">No Data</h2>'}
                 </div>
             </div>
