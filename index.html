@@ -31,11 +31,24 @@
             </div>
             <div id="show-more" class="container mx-auto">
                 <div class="w-full text-center my-12">
-                    <button onclick="showAllHandler()" class="btn btn-error text-white hover:bg-red-500">Show All</button>
+                    <button onclick="showAllHandler()" class="btn btn-error text-white hover:bg-red-500">Show
+                        All</button>
                 </div>
             </div>
         </section>
-
+        <section id="modal">
+            <dialog id="my_modal_2" class="modal">
+                <form method="dialog" class="modal-box max-w-[850px]">
+                    <button class="btn btn-sm btn-circle btn-ghost hover:btn-error absolute right-2 top-2">✕</button>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-4 p-8" id="modal-cards-container">
+                        
+                    </div>
+                </form>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+        </section>
     </main>
     <footer>
 
