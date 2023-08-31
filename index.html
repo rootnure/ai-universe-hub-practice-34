@@ -21,8 +21,18 @@
             <div class="text-center my-8">
                 <button class="btn btn-error text-white hover:bg-red-500">Sort By Date</button>
             </div>
-            <div id="tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-16">
+            <div id="loading-spinner" class="h-48 flex items-center">
+                <div class="w-full text-center scale-150">
+                    <span class="loading loading-bars loading-lg text-info"></span>
+                </div>
+            </div>
+            <div id="tools-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-12">
 
+            </div>
+            <div id="show-more" class="container mx-auto">
+                <div class="w-full text-center my-12">
+                    <button onclick="showAllHandler()" class="btn btn-error text-white hover:bg-red-500">Show All</button>
+                </div>
             </div>
         </section>
 

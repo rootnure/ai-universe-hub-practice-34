@@ -1,4 +1,11 @@
-const loadAll = async (isLoadAll) => {
+const loadToolsData = async (isLoadAll) => {
+    if(!isLoadAll) {
+        toggleShowAllBtn(true);
+    }
+    else {
+        toggleShowAllBtn(false);
+    }
+    toggleLoadingSpinner(true);
     const res = await fetch('https://openapi.programming-hero.com/api/ai/tools');
     const data = await res.json();
     const allTools = data.data.tools;
@@ -7,6 +14,8 @@ const loadAll = async (isLoadAll) => {
 
 const displayTools = (tools, isLoadAll) => {
     const toolsContainer = document.getElementById('tools-container');
+
+    toolsContainer.textContent = '';
 
     if(!isLoadAll){
         tools = tools.slice(0, 6);
@@ -41,6 +50,7 @@ const displayTools = (tools, isLoadAll) => {
         `;
         toolsContainer.appendChild(toolDiv);
     });
+    toggleLoadingSpinner(false);
     replaceUnavailableImages();
 }
 
@@ -49,8 +59,34 @@ const replaceUnavailableImages = () => {
 
     for(const image of images) {
         image.addEventListener('error', function () {
-        this.src = './images/loading.jpg';
+        this.parentNode.innerHTML = `
+            <p class="text-gray-400 text-4xl font-semibold">AI Universe HUB</p>
+        `;
     })};
 }
 
-loadAll(false);
+const showAllHandler = () => {
+    loadToolsData(true);
+}
+
+const toggleShowAllBtn = isVisible => {
+    const showAllBtn = document.getElementById("show-more");
+    if(isVisible) {
+        showAllBtn.classList.remove('hidden');
+    }
+    else {
+        showAllBtn.classList.add('hidden');
+    }
+}
+
+const toggleLoadingSpinner = isVisible => {
+    const showLoadingSpinner = document.getElementById("loading-spinner");
+    if(isVisible) {
+        showLoadingSpinner.classList.remove('hidden');
+    }
+    else {
+        showLoadingSpinner.classList.add('hidden');
+    }
+}
+
+loadToolsData(false);
