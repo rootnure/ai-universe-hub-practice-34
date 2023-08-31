@@ -1,4 +1,4 @@
-const loadToolsData = async (isLoadAll) => {
+const loadToolsData = async (isLoadAll = false, isSortedByDate = false) => {
     if (!isLoadAll) {
         toggleShowAllBtn(true);
     }
@@ -8,8 +8,14 @@ const loadToolsData = async (isLoadAll) => {
     toggleLoadingSpinner(true);
     const res = await fetch('https://openapi.programming-hero.com/api/ai/tools');
     const data = await res.json();
-    const allTools = data.data.tools;
-    displayTools(allTools, isLoadAll);
+    const tools = data.data.tools;
+
+    // sorting data
+    if (isSortedByDate) {
+        tools.sort((a, b) => (new Date(a.published_in).getTime() < new Date(b.published_in).getTime()) ? 1 : ((new Date(b.published_in).getTime() < new Date(a.published_in).getTime()) ? -1 : 0));
+    }
+
+    displayTools(tools, isLoadAll);
 }
 
 const displayTools = (tools, isLoadAll) => {
@@ -67,11 +73,11 @@ const replaceUnavailableImages = () => {
 }
 
 const showAllHandler = () => {
-    loadToolsData(true);
+    loadToolsData(true, true);
 }
 
 const toggleShowAllBtn = isVisible => {
-    const showAllBtn = document.getElementById("show-more");
+    const showAllBtn = document.getElementById("show-all");
     if (isVisible) {
         showAllBtn.classList.remove('hidden');
     }
@@ -96,23 +102,23 @@ const openDetailsModal = async (toolsId) => {
     const data = await res.json();
     const toolInfo = data.data;
 
-    console.log(toolInfo);
+    // console.log(toolInfo);
 
     // data preprocessing and destructuring
-    const { tool_name, description, pricing, features, integrations, image_link, input_output_examples:samples, accuracy } = toolInfo;
+    const { tool_name, description, pricing, features, integrations, image_link, input_output_examples: samples, accuracy } = toolInfo;
     const pricingIfMissing = [
         { plan: "Basic", price: "No Info" },
         { plan: "Pro", price: "No Info" },
         { plan: "Enterprise", price: "No Info" }
     ]
     const [pricing1, pricing2, pricing3] = pricing || pricingIfMissing;
-    
+
     const featuresArray = [];
-    for(const feature in features) {
+    for (const feature in features) {
         featuresArray.push(features[feature]);
     }
-    console.log(features);
-    console.log(featuresArray);
+    // console.log(features);
+    // console.log(featuresArray);
 
     // modal body here
     const modalCards = document.getElementById('modal-cards-container');
@@ -141,7 +147,7 @@ const openDetailsModal = async (toolsId) => {
         </div>
         <div>
             <div class="card border relative">
-                ${accuracy ? `<p class="absolute px-2 py-1 top-3 right-5 rounded-md bg-red-500 text-white text-xs" title="${accuracy.description}">${accuracy.score ? accuracy.score*100+"%" : 'Hover for '} accuracy</p>` : ''}
+                ${accuracy ? `<p class="absolute px-2 py-1 top-3 right-5 rounded-md bg-red-500 text-white text-xs" title="${accuracy.description}">${accuracy.score ? accuracy.score * 100 + "%" : 'Hover for '} accuracy</p>` : ''}
                 <figure class="p-4 h-[200px]">
                     <img src="${image_link[0]}" alt="${tool_name}" class="rounded-xl object-contain w-full" />
                 </figure>
@@ -156,4 +162,8 @@ const openDetailsModal = async (toolsId) => {
     replaceUnavailableImages();
 }
 
-loadToolsData(false);
+const handleSorting = () => {
+    loadToolsData(false, true);
+}
+
+loadToolsData(false, false);
