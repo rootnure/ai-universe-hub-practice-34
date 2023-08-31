@@ -14,12 +14,12 @@ const displayTools = (tools, isLoadAll) => {
 
     tools.forEach(tool => {
         console.log(tool);
-        const { image, features, name, published_in } = tool;
+        const { id, image, features, name, published_in, links } = tool;
         const toolDiv = document.createElement('div');
         toolDiv.innerHTML = `
-        <div class="card bg-base-100 shadow-xl">
+        <div class="card bg-base-100 shadow-xl" onclick="openDetailsModal('${id}')">
             <figure class="px-10 pt-10 min-h-[250px] max-h-[250px]">
-                <img src="${image}" alt="${name}" class="rounded-lg" />
+                <img src="${image}" alt="${name}" class="rounded-md" />
             </figure>
             <div class="card-body">
                 <h2 class="card-title">Features</h2>
@@ -32,8 +32,8 @@ const displayTools = (tools, isLoadAll) => {
                         <h2 class="text-lg font-bold">${name}</h2>
                         <div class="text-gray-400"><i class="fa-regular fa-calendar-days"></i> <date date=${published_in}>${published_in}</date></div>
                     </div>
-                    <div class="flex items-center">
-                        <button class="rounded-full text-lg px-3 py-2 bg-red-100 text-red-400 font-black hover:scale-110"><i class="fa-solid fa-arrow-right"></i></button>
+                    <div class="flex items-center gap-x-2">
+                        ${links.map(link => `<a href="${link.url ? link.url : 'https://www.google.com/search?q='+name.split(" ").join("+")}" target="_blank" class="rounded-full text-sm p-2 bg-red-100 text-red-400 font-bold hover:scale-110 ease-in-out transition-all duration-100">${link.name ? link.name : name}</a>`).join(" ")}
                     </div>
                     </div>
             </div>
